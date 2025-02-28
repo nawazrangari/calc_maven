@@ -1,0 +1,163 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>calculate</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+    <packaging>war</packaging>
+
+    <properties>
+
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.login>squ_d8c7c2ca4560f2ae5bcc47af9f5895b7ad99a8f2</sonar.login>
+        
+        <maven.build.timestamp.format>yyyy-MM-dd.HH-mm-ss</maven.build.timestamp.format>
+        <timestamp>${maven.build.timestamp}</timestamp>
+    </properties>
+
+
+    <!-- <profiles>
+        <profile>
+            <id>deploy-release</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>releasenexus</id>
+                    <url>http://localhost:8081/repository/maven-releases/</url>
+                </repository>
+            </distributionManagement>
+        </profile> -->
+
+        <!-- <profile>
+            <id>deploy-snapshot</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>snapshotnexus</id>
+                    <url>http://localhost:8081/repository/maven-snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles> -->
+
+
+
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus</id>
+            <name>snapshot nexus</name>
+            <url>http://localhost:8081/repository/maven-snapshots/</url>
+        </snapshotRepository>
+ 
+        <repository>
+            <id>nexus</id>
+            <name>release nexus</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
+
+
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.15.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <url>http://localhost:8081/repository/maven-central/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:8080/calculate</url>
+                    <server>TomcatServer</server>
+                    <path>/calculate</path>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>12.0.1</version>
+                <configuration>
+                    <updateOnly>true</updateOnly>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>5.0.0.4389</version>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>
